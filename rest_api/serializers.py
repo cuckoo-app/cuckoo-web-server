@@ -8,6 +8,7 @@ class JobSerializer(serializers.ModelSerializer):
     """Serializer to map the model instance into json format."""
 
     owner = serializers.ReadOnlyField(source='owner.username')
+    # command = serializers.ReadOnlyField(source='mycommand')
 
     class Meta:
         """Map this serializer to a model and their fields."""
@@ -18,7 +19,7 @@ class JobSerializer(serializers.ModelSerializer):
                   'status',
                   'date_created',
                   'date_modified')
-        read_only_fields = ('owner', 'command', 'date_created',)
+        read_only_fields = ('date_created',)
 
 
 class UserSerializer(serializers.ModelSerializer):

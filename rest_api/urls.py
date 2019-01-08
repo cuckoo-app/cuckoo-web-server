@@ -4,10 +4,10 @@ from .views import CreateView, DetailsView, UserJobView, UserView, UserDetailsVi
 from rest_framework.authtoken.views import obtain_auth_token
 
 urlpatterns = {
-    path('job/', CreateView.as_view(), name="create"),
-    path('job/by-job/<pk>',
+    path('jobs/', CreateView.as_view(), name="create"),
+    path('jobs/by-job/<pk>',
          DetailsView.as_view(), name="details"),
-    path('job/by-owner/<owner>',
+    path('jobs/by-user/<owner>',
          UserJobView.as_view(), name="user_jobs"),
     path('auth/', include('rest_framework.urls',
                           namespace='rest_framework')),

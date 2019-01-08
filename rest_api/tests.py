@@ -64,7 +64,7 @@ class ViewsTestCase(TestCase):
     def test_updating_job(self):
         job = Job.objects.get(pk=1)
         change_job = {'status': Job.SUCCESS}
-        response = self.client.put(
+        response = self.client.patch(
             reverse('details', kwargs={'pk': job.id}),
             change_job,
             format="json",

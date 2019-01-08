@@ -24,7 +24,9 @@ class Job(models.Model):
         choices=STATUS_CHOICES,
         default=RUNNING,
     )
-    command = models.CharField(max_length=255, blank=False, unique=False)
+    command = models.CharField(max_length=255,
+                               blank=False,
+                               unique=False, editable=True)
     owner = models.ForeignKey(
         get_user_model(),
         related_name='jobs',
@@ -36,6 +38,7 @@ class Job(models.Model):
     def __str__(self):
         """Human readable representation of the model."""
         return "{}".format(self.command)
+
 
 
 # LIKEY MOVE THIS SOMEWHERE THAT MAKES MORE SENSE; PREVENT IMPORT ARTIFACTS
