@@ -1,6 +1,7 @@
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
-from .models import User
+from .models import Job
+from rest_framework.authtoken.admin import TokenAdmin
 
+TokenAdmin.raw_id_fields = ('user',)
 
-admin.site.register(User, UserAdmin)
+admin.site.register(Job)

@@ -32,7 +32,9 @@ DEBUG = bool(os.environ.get('DJANGO_DEBUG', True))
 
 ALLOWED_HOSTS = []
 
-AUTH_USER_MODEL = 'rest_api.MyUser'
+APPEND_SLASH = True
+
+AUTH_USER_MODEL = 'users.MyUser'
 
 # Application definition
 
@@ -43,7 +45,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'rest_framework.authtoken',
     'rest_api',
+    'users',
 ]
 
 MIDDLEWARE = [
