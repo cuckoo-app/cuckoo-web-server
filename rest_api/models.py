@@ -1,9 +1,9 @@
 # from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import models
-from django.dispatch import receiver
-from django.db.models.signals import post_save
-from rest_framework.authtoken.models import Token
+# from django.dispatch import receiver
+# from django.db.models.signals import post_save
+# from rest_framework.authtoken.models import Token
 
 
 class Job(models.Model):
@@ -38,12 +38,3 @@ class Job(models.Model):
     def __str__(self):
         """Human readable representation of the model."""
         return "{}".format(self.command)
-
-
-
-# LIKEY MOVE THIS SOMEWHERE THAT MAKES MORE SENSE; PREVENT IMPORT ARTIFACTS
-# This receiver handles token creation when a new user is created.
-@receiver(post_save, sender=get_user_model())
-def create_auth_token(sender, instance=None, created=False, **kwargs):
-    if created:
-        Token.objects.create(user=instance)
