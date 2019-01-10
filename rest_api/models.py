@@ -1,5 +1,6 @@
 # from django.conf import settings
 from dateutil.relativedelta import relativedelta
+from datetime import datetime, timezone
 from django.contrib.auth import get_user_model
 from django.db import models
 # from django.dispatch import receiver
@@ -34,6 +35,8 @@ class Job(models.Model):
         on_delete=models.CASCADE,
     )
     date_created = models.DateTimeField(auto_now_add=True)
+    # Could also manually set this to datetime.now(timezone.utc)
+    # to agree with runtime more accurately
     date_modified = models.DateTimeField(auto_now=True)
     runtime = models.CharField(max_length=8, default='00:00:00')
 
@@ -43,10 +46,20 @@ class Job(models.Model):
 
     @property
     def get_runtime(self):
-        delta = relativedelta(self.date_modified, self.date_created)
+        delta = relativedelta(datetime.now(timezone.utc), self.date_created)
         hr = delta.hours
         min = delta.minutes
         sec = delta.seconds
+        microsec = delta.microseconds
+        print(hr, min, sec, microsec)
+        if microsec > 500000:
+            sec += 1
+            if sec == 60:
+                sec = 0
+                min += 1
+                if min == 60:
+                    min = 0
+                    hr += 1
         return '%02d:%02d:%02d' % (hr, min, sec)
 
     def save(self, *args, **kwargs):
