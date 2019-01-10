@@ -5,7 +5,7 @@ from rest_framework.authtoken.views import obtain_auth_token
 
 urlpatterns = {
     path('jobs/', CreateView.as_view(), name="create"),
-    path('jobs/by-job/<pk>',
+    path('jobs/<pk>',
          DetailsView.as_view(), name="details"),
     # path('jobs/by-user/<pk>',
     #      UserJobView.as_view(), name="user_jobs"),

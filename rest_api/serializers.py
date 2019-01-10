@@ -18,7 +18,8 @@ class JobSerializer(serializers.ModelSerializer):
                   'command',
                   'status',
                   'date_created',
-                  'date_modified')
+                  'date_modified',
+                  'runtime')
         read_only_fields = ('date_created',)
 
 

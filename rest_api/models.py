@@ -1,4 +1,5 @@
 # from django.conf import settings
+from dateutil.relativedelta import relativedelta
 from django.contrib.auth import get_user_model
 from django.db import models
 # from django.dispatch import receiver
@@ -34,7 +35,20 @@ class Job(models.Model):
     )
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
+    runtime = models.CharField(max_length=8, default='00:00:00')
 
     def __str__(self):
         """Human readable representation of the model."""
         return "{}".format(self.command)
+
+    @property
+    def get_runtime(self):
+        delta = relativedelta(self.date_modified, self.date_created)
+        hr = delta.hours
+        min = delta.minutes
+        sec = delta.seconds
+        return '%02d:%02d:%02d' % (hr, min, sec)
+
+    def save(self, *args, **kwargs):
+        self.runtime = self.get_runtime
+        super().save(*args, **kwargs)
