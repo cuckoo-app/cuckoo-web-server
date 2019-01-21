@@ -32,4 +32,4 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         """Map this serializer to the default django user model."""
         model = get_user_model()
-        fields = ('id', 'username', 'jobs')
+        fields = ('id', 'username', 'email', 'jobs')

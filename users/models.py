@@ -9,27 +9,32 @@ from rest_framework.authtoken.models import Token
 
 
 class MyUserManager(BaseUserManager):
-    def create_user(self, username, password=None):
+    def create_user(self, username, email, password=None):
         """
-        Creates and saves a User with the given username and password.
+        Creates and saves a User with the given username, email, and password.
         """
         if not username:
-            raise ValueError('Users must have an username')
+            raise ValueError('Users must have an username.')
+        if not email:
+            raise ValueError('Users must have an email.')
 
         user = self.model(
             username=AbstractBaseUser.normalize_username(username),
+            email=self.normalize_email(email),
         )
 
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, username, password):
+    def create_superuser(self, username, email, password):
         """
-        Creates and saves a superuser with the given username and password.
+        Creates and saves a superuser with the given username, email,
+        and password.
         """
         user = self.create_user(
             username,
+            email,
             password=password,
         )
         user.is_admin = True
@@ -39,11 +44,11 @@ class MyUserManager(BaseUserManager):
 
 class MyUser(AbstractBaseUser):
     username = models.CharField(max_length=15, unique=True)
-    # email = models.EmailField(
-    #     verbose_name='email',
-    #     max_length=255,
-    #     unique=True,
-    # )
+    email = models.EmailField(
+        verbose_name='email',
+        max_length=255,
+        unique=True,
+    )
     # date_of_birth = models.DateField()
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
@@ -51,7 +56,7 @@ class MyUser(AbstractBaseUser):
     objects = MyUserManager()
 
     USERNAME_FIELD = 'username'
-    # REQUIRED_FIELDS = ['date_of_birth']
+    REQUIRED_FIELDS = ['email']
 
     def __str__(self):
         return self.username
@@ -73,7 +78,7 @@ class MyUser(AbstractBaseUser):
         return self.is_admin
 
 
-# LIKEY MOVE THIS SOMEWHERE THAT MAKES MORE SENSE; PREVENT IMPORT ARTIFACTS
+# LIKELY MOVE THIS SOMEWHERE THAT MAKES MORE SENSE; PREVENT IMPORT ARTIFACTS
 # This receiver handles token creation when a new user is created.
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_auth_token(sender, instance=None, created=False, **kwargs):
